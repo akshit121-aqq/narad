@@ -85,9 +85,15 @@ async function initializeSystemParams() {
 
 // Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, async () => {
+const server = app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
 
   // Initialize system parameters on server start
   await initializeSystemParams();
 });
+
+// Disable timeouts for long-running aggregation endpoints (30M+ votes)
+server.timeout = 0;
+server.keepAliveTimeout = 0;
+server.requestTimeout = 0;
+
